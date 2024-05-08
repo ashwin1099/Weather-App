@@ -10,12 +10,12 @@ const weather_body = document.querySelector('.weather-body');
 const suggestionsContainer = document.querySelector('.suggestions');
 
 const weatherImages = {
-    Clouds: "/assets/cloud.png",
-    Clear: "/assets/clear.png",
-    Rain: "/assets/rain.png",
-    Mist: "/assets/mist.png",
-    Haze: "/assets/haze.png", 
-    Snow: "/assets/snow.png"
+    Clouds: "assets/cloud.png",
+    Clear: "assets/clear.png",
+    Rain: "assets/rain.png",
+    Mist: "assets/mist.png",
+    Haze: "assets/haze.png", 
+    Snow: "assets/snow.png"
 };
 
 let recentSearches = ["Hyderabad", "Delhi", "London"]; // Initial suggestion cities
@@ -57,7 +57,7 @@ async function checkWeather(city) {
             const weatherCondition = weather_data.weather[0].main;
 
             // Set weather background based on condition
-            document.body.style.backgroundImage = `url('/assets/${weatherCondition.toLowerCase()}-bg.jpg')`;
+            document.body.style.backgroundImage = `url('assets/${weatherCondition.toLowerCase()}-bg.jpg')`;
 
             // Set weather icon
             weather_img.src = weatherImages[weatherCondition] || ''; // Default to empty string if no image found
