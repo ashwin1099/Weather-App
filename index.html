@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App With JavaScript</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="search-box">
+                <input type="text" placeholder="Enter your location" class="input-box" id="inputBox" autofocus>
+                
+                
+                <button class="fa-solid fa-magnifying-glass" id="searchBtn" onclick="handleSearch()"></button>
+                
+            </div>
+            <div class="suggestions">
+                <div class="city-box" onclick="searchCity('Hyderabad')">Hyderabad</div>
+                <div class="city-box" onclick="searchCity('Delhi')">Delhi</div>
+                <div class="city-box" onclick="searchCity('London')">London</div>
+                <!-- Add more city boxes as needed -->
+            </div>
+            <h2 id="searchedCity"></h2>
+        </div>
+
+        <div class="location-not-found">
+            <h1>Sorry, Location not found!!!</h1>
+            <img src="assets/404.png" alt="404 Error">
+        </div>
+
+        <div class="weather-body">
+            <img alt="Weather Image" class="weather-img">
+
+            <div class="weather-box">
+                <p class="temperature">0 <sup>°C</sup></p>
+                <p class="description">light rain</p>
+            </div>
+
+            <div class="weather-details">
+                <div class="humidity">
+                    <i class="fa-sharp fa-solid fa-droplet"></i>
+                    <div class="text">
+                        <span id="humidity">45%</span>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+
+                <div class="wind">
+                    <i class="fa-solid fa-wind"></i>
+                    <div class="text">
+                        <span id="wind-speed">12Km/H</span>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy">
+            <p>&copy; 2024 Ashwin. All rights reserved.</p>
+
+        </div>
+    </div>
+
+   
+    <script>
+        function searchCity(city) {
+            checkWeather(city)
+                .then(() => {
+                    // If search is successful, add the city to recent searches
+                    if (!recentSearches.includes(city)) {
+                        recentSearches.unshift(city); // Add city to the beginning of the array
+                        if (recentSearches.length > 3) {
+                            recentSearches.pop(); // Limit recent searches to 3
+                        }
+                    }
+                    updateSuggestions(); // Update suggestions with recent searches
+                    document.getElementById('searchedCity').innerText = city; // Set the inner text of h2 with the selected city
+                })
+                .catch(error => {
+                    console.error("Error fetching weather data:", error);
+                });
+        }
+        
+        // Event listener for city box click
+        cityBox.addEventListener('click', () => {
+            const selectedCity = cityBox.textContent;
+            searchCity(selectedCity);
+        });
+        
+        
+        
+        // Function to handle search
+        function handleSearch() {
+            const city = inputBox.value;
+            checkWeather(city)
+                .then(() => {
+                    // Capitalize the first letter of each word in the city name
+                    const capitalizedCity = city.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        
+                    // Update the content of the searchedCity element with the capitalized city name
+                    document.querySelector('#searchedCity').textContent = capitalizedCity;
+                })
+                .catch(error => {
+                    console.error("Error fetching weather data:", error);
+                });
+        }
+        
+
+// Event listener for Enter key press
+inputBox.addEventListener('keypress', function(event) {
+    // Check if Enter key was pressed (key code 13)
+    if (event.key === 'Enter') {
+        handleSearch();
+    }
+});
+
+// Event listener for search button click
+searchBtn.addEventListener('click', handleSearch);
+
+    </script>
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/595a890311.js" crossorigin="anonymous"></script>
+</body>
+</html>
